@@ -74,5 +74,7 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
 **Improvements/TBD**
 
 Create a separate security group for EC2s in public subnet(s)
-Create and attach an EIP to the EC2 (In that way we know in advance the EC2's public IP)
+
+Create and attach an EIP to the EC2 (In that way, we know in advance the EC2's public IP so we can add it into ansible/hosts file)
+
 Create a site2site VPN and add EC2 into the private subnet.
