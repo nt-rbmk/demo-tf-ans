@@ -24,7 +24,7 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
 **Let' s start**
 1. After creating the AWS account it' s necessary to create the access keys:
    On AWS console navigate to IAM -> Users -> Add Users (don' t forget to attach the AdministratorAccess policy) and then under Security Credentials tab create an access key.
-2. In the shell you need the following to add the access key:
+2. In the linux shell you need the following for the access key (feel free to name the profile as you like):
 ```
    :~# cd ~
    :~# mkdir .aws
@@ -37,7 +37,7 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
    aws_access_key_id = AKXXXXXRU
    aws_secret_access_key = 00XXXXXXXXBU
 ```
-3. Checkout the code and let' s prepare the terraform environemt, by creating the S3 bucket that will store the terraform state.
+3. Checkout the code from this repo and let' s prepare the terraform environemt, by creating the S3 bucket that will store the terraform state.
    
    **NOTE**: Please use your own profile name and a different S3 bucket name.
 ```
@@ -50,8 +50,8 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
    
 4. Create the infrastructure + ec2:
 
-   **NOTES**: Please change myip with your own public IP address (line 5) at modules/vpc/_variables.tf.
-              Please change  keyname (line 15), private_key_file (line 38) and private_key directory (line 44) at modules/ec2s/demo-ec2.tf. Keep in mind that you should change /etc/ansible/hosts file and add the elastic_ip that will be attached to the ec2 during its creation. Otherwise ansible execution will fail.
+   **NOTES**: Please change _myip_ with your own public IP address (line 5) at modules/vpc/_variables.tf.
+              Please change  _keyname_ (line 15), _private_key_file_ (line 38) and _private_key_ directory (line 44) at modules/ec2s/demo-ec2.tf. Keep in mind that you should change /etc/ansible/hosts file and add the elastic_ip that will be attached to the ec2 during its creation. Otherwise ansible execution will fail.
 ```
    :~# cd ..
    :~# ls
