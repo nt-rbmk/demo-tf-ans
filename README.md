@@ -101,4 +101,4 @@ Add permanent storage to containers
 
 Use Ansible to install docker-loki-driver
 
-Add TLS/authentication to Loki/Prometheus Data source
+Add TLS/authentication to Loki+Prometheus Data sources
