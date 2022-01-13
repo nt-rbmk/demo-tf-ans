@@ -1,6 +1,6 @@
 **INFO**
 
-In this repo you can find step-by-step insructions to create a Log aggregation/Monitoring mechanism against Kintsugi clients.
+In this repo you can find step-by-step insructions to create a Log aggregation/Monitoring mechanism against any running container.
 Terraform will be used to create a basic infrastructure on AWS, consisting of VPC, subnet(s), routes, security groups and finally an EC2 that will contain a dockerized version of Grafana, Prometheus, Promtail, Loki and Cadvisor.
 
 **Technologies to be used**
@@ -67,7 +67,7 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
    
    Then select Loki and add in URL http://loki:3100
    
-   Finally, click Create -> Import add 893 and Load. Select Prometheus Data source and import. The dashboard for docker containers is ready.
+   Finally, click Create -> Import add 893 and Load. Select Prometheus Data source and import. The dashboard for docker containers stats is ready.
 
 
 
