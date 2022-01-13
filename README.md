@@ -70,6 +70,24 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
    Finally, click Create -> Import add 893 and Load. Select Prometheus Data source and import. The dashboard for docker containers stats is ready.
 
 
+6. Run a container using loki as logging mechanism:
+
+   Before executing any container, we should ssh to the fresh installed ec2 and install the loki docker driver:
+```
+   ubuntu@ip-192-10-0-89:~$ docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
+   docker run --log-driver=loki --log-opt loki-url="http://localhost:3100/loki/api/v1/push" --name foo hello-world
+``` 
+   On Grafana, under Expore menu we can find the logs produced by foo container.
+   
+   We could also add the following configuration, in a docker-compose.yaml file:
+```
+   logging:
+     driver: loki
+     options:
+       loki-url: "http://localhost:3100/loki/api/v1/push"
+       loki-retries: "5"
+       loki-batch-size: "400"
+```
 
 **Improvements/TBD**
 
@@ -78,3 +96,9 @@ Create a separate security group for EC2s in public subnet(s)
 Create and attach an EIP to the EC2 (In that way, we know in advance the EC2's public IP so we can add it into ansible/hosts file)
 
 Create a site2site VPN and add the EC2 into the private subnet.
+
+Add permanent storage to containers
+
+Use Ansible to install docker-loki-driver
+
+Add TLS/authentication to Loki/Prometheus Data source
