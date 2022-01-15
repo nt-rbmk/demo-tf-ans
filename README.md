@@ -95,10 +95,14 @@ Create a separate security group for EC2s in public subnet(s)
 
 Create and attach an EIP to the EC2 (In that way, we know in advance the EC2's public IP so we can add it into ansible/hosts file)
 
-Create a site2site VPN and add the EC2 into the private subnet.
+Create a site2site VPN and add the EC2 into the private subnet
 
 Add permanent storage to containers
 
 Use Ansible to install docker-loki-driver
 
 Add TLS/authentication to Loki+Prometheus Data sources
+
+Alerting mechanism on Grafana
+
+Enrich documentation with images
