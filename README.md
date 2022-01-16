@@ -72,15 +72,23 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
 
 6. Run a container using loki as logging mechanism:
 
-   Before executing any container, we should ssh to the fresh installed ec2 and install the loki docker driver:
+   Before executing any container, we should ssh to the fresh installed ec2 and install the loki docker driver. In the following example we will create python web server in the simplest form:
 ```
    ubuntu@ip-192-10-0-89:~$ docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
-   docker run --log-driver=loki --log-opt loki-url="http://localhost:3100/loki/api/v1/push" --name foo hello-world
+   ubuntu@ip-192-10-0-89:~$ mkdir foo ; cd !$ ; vi Dockerfile
+   ubuntu@ip-192-10-0-89:~/foo$ cat Dockerfile 
+                                FROM python:3
+                                WORKDIR /tmp
+                                ENTRYPOINT ["python3", "-m", "http.server", "18000"]
+   ubuntu@ip-192-10-0-89:~/foo$ docker build -t pyweb .
+   ubuntu@ip-192-10-0-89:~/foo$ docker run -it --rm --log-driver=loki --log-opt loki-url="http://localhost:3100/loki/api/v1/push" -p 80:18000 --name pyweb pyweb
+
 ``` 
    On Grafana, under Expore menu we can find the logs produced by foo container.
    
    We could also add the following configuration, in a docker-compose.yaml file:
 ```
+   ...
    logging:
      driver: loki
      options:
@@ -88,6 +96,13 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
        loki-retries: "5"
        loki-batch-size: "400"
 ```
+
+
+7. Last but not least, we could run a python data generator script to send some random data against the python web server. If everyhting worked as expected, you could see the logs on Grafana/Loki:
+```
+   ubuntu@ip-192-10-0-89:~$ python3 tools/data_generator.py
+```
+
 
 **Improvements/TBD**
 
