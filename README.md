@@ -98,7 +98,7 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
 ```
 
 
-7. Last but not least, we could run a python data generator script to send some random data against the python web server. If everyhting worked as expected, you could see the logs on Grafana/Loki:
+7. Last but not least, we could run a python data generator script to send some random data against the containerized web server. If everyhting worked as expected, you could see the output/logs on Grafana/Loki:
 ```
    ubuntu@ip-192-10-0-89:~$ python3 tools/data_generator.py
 ```
