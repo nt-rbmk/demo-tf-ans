@@ -26,7 +26,6 @@ Terraform will be used to create a basic infrastructure on AWS, consisting of VP
    On AWS console navigate to IAM -> Users -> Add Users (don' t forget to attach the AdministratorAccess policy) and then under Security Credentials tab create an access key.
 2. In the linux shell you need the following for the access key (feel free to name the profile as you like):
 ```
-   :~# cd ~
    :~# mkdir .aws
    :~# cat .aws/config 
    [profile nt-rbmk]
