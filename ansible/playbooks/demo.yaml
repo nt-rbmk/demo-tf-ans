@@ -1,1 +1,97 @@
-# tmp demo.yaml
+- name: Demo
+  hosts: all
+  vars_files:
+          - ../files/packages
+  tasks:
+          - name: Set timezone
+            become: yes
+            community.general.timezone:
+                    name: Etc/UTC
+
+          - name: Install required packages
+            become: yes
+            apt:
+                    update_cache: yes
+                    name: "{{ item }}"
+                    state: present
+            with_items:
+              - "{{ packages }}"
+
+          - name: Add gpg Key
+            become: yes
+            apt_key:
+                    url: https://download.docker.com/linux/ubuntu/gpg
+                    state: present
+
+          - name: Add docker repo
+            become: yes
+            apt_repository: 
+                    repo: deb https://download.docker.com/linux/ubuntu focal stable
+                    state: present
+
+          - name: Update packages and Install docker
+            become: yes
+            apt:
+                    update_cache: yes
+                    name: "{{ item }}"
+                    state: present
+            with_items:
+              - "{{ dpackages }}"
+
+          - name: Add ubuntu to docker group
+            become: yes
+            ansible.builtin.user:
+                    name: ubuntu
+                    groups: docker
+                    append: yes
+
+          - name: Reset ssh connection
+            ansible.builtin.meta:
+                    reset_connection
+
+          - name: Install docker SDK
+            pip:
+                    name: "{{ item }}"
+            loop:
+                    - docker
+                    - docker-compose==1.25.4
+
+          - name: Enable and start docker service
+            become: yes
+            service:
+                    name: docker
+                    enabled: yes
+                    state: started
+
+          - name: Install docker-compose
+            become: yes
+            get_url:
+                    url: https://github.com/docker/compose/releases/download/1.25.4/docker-compose-Linux-x86_64
+                    dest: /usr/local/bin/docker-compose
+                    mode: 0755
+
+          - name: Sync tools directory
+            ansible.posix.synchronize:
+                    src: ../files/tools
+                    dest: /home/ubuntu
+                    delete: yes
+
+          - name: Create docker directory
+            ansible.builtin.file:
+                    path: /home/ubuntu/docker
+                    state: directory
+                    mode: '0755'
+
+          - name: Copy docker-compose files
+            copy:
+                    src: ../files/docker/{{ item }}
+                    dest: /home/ubuntu/docker/{{ item }}
+            loop:
+                    - docker-compose.yaml
+                    - prometheus.yml
+
+          - name: Execute docker-compose
+            docker_compose:
+                    project_src: /home/ubuntu/docker
+                    files:
+                            - docker-compose.yaml
